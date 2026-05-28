@@ -36,6 +36,8 @@ public WeatherResponseDTO getWeatherData(String city) {
           
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
      String json  = response.body();
+
+
      ObjectMapper mapper = new ObjectMapper();
      JsonNode  data  = mapper.readTree(json);
  /*  System.err.println(data);
@@ -45,6 +47,7 @@ public WeatherResponseDTO getWeatherData(String city) {
         double temperature = data.get("main").get("temp").asDouble();
         String description = data.get("weather").get(0).get("description").asString();
         int humidity = data.get("main").get("humidity").asInt();
+        
          return  new WeatherResponseDTO(temperature, description, humidity);
             } catch (Exception e) {
                         
