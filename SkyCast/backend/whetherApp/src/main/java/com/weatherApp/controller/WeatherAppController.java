@@ -11,7 +11,7 @@ import com.weatherApp.service.WeatherService;
 public class WeatherAppController {
     
    private final  WeatherService weatherService;
-   WeatherAppController(WeatherService weatherService){
+   public  WeatherAppController(WeatherService weatherService){
     this.weatherService=weatherService;
    }
    @GetMapping("/{city}")
