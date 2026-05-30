@@ -3,6 +3,7 @@ package com.weatherApp.service;
 import org.springframework.stereotype.Service;
 
 import com.weatherApp.dto.WeatherResponseDTO;
+import com.weatherApp.model.WeatherAdvice;
 
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -18,7 +19,12 @@ import org.springframework.beans.factory.annotation.Value;
 public class WeatherService {
     @Value("${weather.api.key}")
  private String apiKey ;
+ private final    AiWeatherService aiWeatherService;
 
+
+  public WeatherService(AiWeatherService aiWeatherService){
+   this.aiWeatherService = aiWeatherService;
+ }
 public WeatherResponseDTO getWeatherData(String city) {
         // Logic to fetch weather data from an API
         // For example, you can use RestTemplate to call an external weather API
@@ -47,8 +53,9 @@ public WeatherResponseDTO getWeatherData(String city) {
         double temperature = data.get("main").get("temp").asDouble();
         String description = data.get("weather").get(0).get("description").asString();
         int humidity = data.get("main").get("humidity").asInt();
-        
-         return  new WeatherResponseDTO(temperature, description, humidity);
+      WeatherAdvice aiAdvice = aiWeatherService.anlyzeWeather(temperature, humidity, description);
+
+         return  new WeatherResponseDTO(temperature, description, humidity,aiAdvice);
             } catch (Exception e) {
                         
 
