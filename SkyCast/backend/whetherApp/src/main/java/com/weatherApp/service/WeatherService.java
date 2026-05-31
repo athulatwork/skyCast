@@ -64,4 +64,29 @@ public WeatherResponseDTO getWeatherData(String city) {
    }
 
 
-}}
+}
+   WeatherResponseDTO getWeatherWithoutAi(String city ){
+      
+      try {
+            String url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric";
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                                .uri(URI.create(url))
+                                .build();
+                                HttpResponse<String> respone = client.send(request, HttpResponse.BodyHandlers.ofString());
+                                  
+                                String json = respone.body();
+
+
+                                ObjectMapper mapper  = new ObjectMapper();
+                                 JsonNode data = mapper.readTree(json);
+                                 double temperature = data.get("main").get("temp").asDouble();
+                                 int humidity = data.get("main").get("humidity").asInt();
+            return new WeatherResponseDTO();
+                              }
+      catch( Exception e
+      ){         throw new RuntimeException("Faild the api fetching ");
+}
+   }
+}
